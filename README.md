@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.acme_ai_sdk.api/acme-ai-sdk-java)](https://central.sonatype.com/artifact/com.acme_ai_sdk.api/acme-ai-sdk-java/0.0.1-alpha.0)
-[![javadoc](https://javadoc.io/badge2/com.acme_ai_sdk.api/acme-ai-sdk-java/0.0.1-alpha.0/javadoc.svg)](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.0.1-alpha.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.acme_ai_sdk.api/acme-ai-sdk-java)](https://central.sonatype.com/artifact/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1)
+[![javadoc](https://javadoc.io/badge2/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1/javadoc.svg)](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.acme-ai-sdk.com). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.0.1-alpha.0).
+The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.acme-ai-sdk.com). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.a
 ### Gradle
 
 ```kotlin
-implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.0.1-alpha.0")
+implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.1")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.0.1-alpha.0")
 <dependency>
     <groupId>com.acme_ai_sdk.api</groupId>
     <artifactId>acme-ai-sdk-java</artifactId>
-    <version>0.0.1-alpha.0</version>
+    <version>0.1.0-alpha.1</version>
 </dependency>
 ```
 
