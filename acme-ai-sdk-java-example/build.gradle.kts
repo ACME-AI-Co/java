@@ -17,5 +17,5 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 application {
-    mainClass = "com.acme_ai_sdk.api.example.Main"
+    mainClass.set("com.acme_ai_sdk.api.example.Main")
 }
