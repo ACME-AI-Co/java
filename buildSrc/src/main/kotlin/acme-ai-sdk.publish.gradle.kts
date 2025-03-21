@@ -27,9 +27,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/acme-ai-sdk-java.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/acme-ai-sdk-java.git")
-                    url.set("https://github.com/stainless-sdks/acme-ai-sdk-java")
+                    connection.set("scm:git:git://github.com/ACME-AI-Co/java.git")
+                    developerConnection.set("scm:git:git://github.com/ACME-AI-Co/java.git")
+                    url.set("https://github.com/ACME-AI-Co/java")
                 }
 
                 versionMapping {
