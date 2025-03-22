@@ -2,18 +2,18 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.acme_ai_sdk.api/acme-ai-sdk-java)](https://central.sonatype.com/artifact/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1)
-[![javadoc](https://javadoc.io/badge2/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1/javadoc.svg)](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.acme_ai_sdk.api/acme-ai-sdk-java)](https://central.sonatype.com/artifact/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2)
+[![javadoc](https://javadoc.io/badge2/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2/javadoc.svg)](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2)
 
 <!-- x-release-please-end -->
 
-The Acme AI SDK Java SDK provides convenient access to the Acme AI SDK REST API from applications written in Java.
+The Acme AI SDK Java SDK provides convenient access to the [Acme AI SDK REST API](https://docs.acme-ai-sdk.com) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.acme-ai-sdk.com). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.1).
+The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.acme-ai-sdk.com). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2).
 
 <!-- x-release-please-end -->
 
@@ -24,16 +24,16 @@ The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.a
 ### Gradle
 
 ```kotlin
-implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.1")
+implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.2")
 ```
 
 ### Maven
 
 ```xml
 <dependency>
-    <groupId>com.acme_ai_sdk.api</groupId>
-    <artifactId>acme-ai-sdk-java</artifactId>
-    <version>0.1.0-alpha.1</version>
+  <groupId>com.acme_ai_sdk.api</groupId>
+  <artifactId>acme-ai-sdk-java</artifactId>
+  <version>0.1.0-alpha.2</version>
 </dependency>
 ```
 
@@ -255,16 +255,16 @@ The SDK throws custom unchecked exception types:
 
 - [`AcmeAiSdkServiceException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/AcmeAiSdkServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                       |
-  | ------ | ------------------------------- |
-  | 400    | `BadRequestException`           |
-  | 401    | `AuthenticationException`       |
-  | 403    | `PermissionDeniedException`     |
-  | 404    | `NotFoundException`             |
-  | 422    | `UnprocessableEntityException`  |
-  | 429    | `RateLimitException`            |
-  | 5xx    | `InternalServerException`       |
-  | others | `UnexpectedStatusCodeException` |
+  | Status | Exception                                                                                                                            |
+  | ------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+  | 400    | [`BadRequestException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/UnexpectedStatusCodeException.kt) |
 
 - [`AcmeAiSdkIoException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/AcmeAiSdkIoException.kt): I/O networking errors.
 
