@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Acme AI SDK Java SDK provides convenient access to the Acme AI SDK REST API from applications written in Java.
+The Acme AI SDK Java SDK provides convenient access to the [Acme AI SDK REST API](https://docs.acme-ai-sdk.com) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -31,9 +31,9 @@ implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.1")
 
 ```xml
 <dependency>
-    <groupId>com.acme_ai_sdk.api</groupId>
-    <artifactId>acme-ai-sdk-java</artifactId>
-    <version>0.1.0-alpha.1</version>
+  <groupId>com.acme_ai_sdk.api</groupId>
+  <artifactId>acme-ai-sdk-java</artifactId>
+  <version>0.1.0-alpha.1</version>
 </dependency>
 ```
 
