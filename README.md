@@ -255,16 +255,16 @@ The SDK throws custom unchecked exception types:
 
 - [`AcmeAiSdkServiceException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/AcmeAiSdkServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                       |
-  | ------ | ------------------------------- |
-  | 400    | `BadRequestException`           |
-  | 401    | `AuthenticationException`       |
-  | 403    | `PermissionDeniedException`     |
-  | 404    | `NotFoundException`             |
-  | 422    | `UnprocessableEntityException`  |
-  | 429    | `RateLimitException`            |
-  | 5xx    | `InternalServerException`       |
-  | others | `UnexpectedStatusCodeException` |
+  | Status | Exception                                                                                                                            |
+  | ------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+  | 400    | [`BadRequestException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/UnexpectedStatusCodeException.kt) |
 
 - [`AcmeAiSdkIoException`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/errors/AcmeAiSdkIoException.kt): I/O networking errors.
 
