@@ -7,9 +7,7 @@ import com.acme_ai_sdk.api.core.ExcludeMissing
 import com.acme_ai_sdk.api.core.JsonField
 import com.acme_ai_sdk.api.core.JsonMissing
 import com.acme_ai_sdk.api.core.JsonValue
-import com.acme_ai_sdk.api.core.NoAutoDetect
 import com.acme_ai_sdk.api.core.checkKnown
-import com.acme_ai_sdk.api.core.immutableEmptyMap
 import com.acme_ai_sdk.api.core.toImmutable
 import com.acme_ai_sdk.api.errors.AcmeAiSdkInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -17,21 +15,26 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class FileFileslistResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("files")
-    @ExcludeMissing
-    private val files: JsonField<List<File>> = JsonMissing.of(),
-    @JsonProperty("limit") @ExcludeMissing private val limit: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("total") @ExcludeMissing private val total: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val files: JsonField<List<File>>,
+    private val limit: JsonField<Long>,
+    private val offset: JsonField<Long>,
+    private val total: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("files") @ExcludeMissing files: JsonField<List<File>> = JsonMissing.of(),
+        @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
+    ) : this(files, limit, offset, total, mutableMapOf())
 
     /**
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -91,23 +94,15 @@ private constructor(
      */
     @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): FileFileslistResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        files().ifPresent { it.forEach { it.validate() } }
-        limit()
-        offset()
-        total()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -221,38 +216,61 @@ private constructor(
                 limit,
                 offset,
                 total,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): FileFileslistResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        files().ifPresent { it.forEach { it.validate() } }
+        limit()
+        offset()
+        total()
+        validated = true
+    }
+
     class File
-    @JsonCreator
     private constructor(
-        @JsonProperty("completion_time")
-        @ExcludeMissing
-        private val completionTime: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("error")
-        @ExcludeMissing
-        private val error: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("file_id")
-        @ExcludeMissing
-        private val fileId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("file_size")
-        @ExcludeMissing
-        private val fileSize: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("filename")
-        @ExcludeMissing
-        private val filename: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<Status> = JsonMissing.of(),
-        @JsonProperty("upload_time")
-        @ExcludeMissing
-        private val uploadTime: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val completionTime: JsonField<OffsetDateTime>,
+        private val error: JsonField<String>,
+        private val fileId: JsonField<String>,
+        private val fileSize: JsonField<Long>,
+        private val filename: JsonField<String>,
+        private val status: JsonField<Status>,
+        private val uploadTime: JsonField<OffsetDateTime>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("completion_time")
+            @ExcludeMissing
+            completionTime: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("error") @ExcludeMissing error: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("file_id") @ExcludeMissing fileId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("file_size") @ExcludeMissing fileSize: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("filename")
+            @ExcludeMissing
+            filename: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+            @JsonProperty("upload_time")
+            @ExcludeMissing
+            uploadTime: JsonField<OffsetDateTime> = JsonMissing.of(),
+        ) : this(
+            completionTime,
+            error,
+            fileId,
+            fileSize,
+            filename,
+            status,
+            uploadTime,
+            mutableMapOf(),
+        )
 
         /**
          * Time processing was completed (if applicable)
@@ -366,26 +384,15 @@ private constructor(
         @ExcludeMissing
         fun _uploadTime(): JsonField<OffsetDateTime> = uploadTime
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): File = apply {
-            if (validated) {
-                return@apply
-            }
-
-            completionTime()
-            error()
-            fileId()
-            fileSize()
-            filename()
-            status()
-            uploadTime()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -541,8 +548,25 @@ private constructor(
                     filename,
                     status,
                     uploadTime,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): File = apply {
+            if (validated) {
+                return@apply
+            }
+
+            completionTime()
+            error()
+            fileId()
+            fileSize()
+            filename()
+            status()
+            uploadTime()
+            validated = true
         }
 
         /** Current processing status */

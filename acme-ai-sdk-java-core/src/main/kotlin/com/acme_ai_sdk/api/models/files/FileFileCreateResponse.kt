@@ -7,33 +7,32 @@ import com.acme_ai_sdk.api.core.ExcludeMissing
 import com.acme_ai_sdk.api.core.JsonField
 import com.acme_ai_sdk.api.core.JsonMissing
 import com.acme_ai_sdk.api.core.JsonValue
-import com.acme_ai_sdk.api.core.NoAutoDetect
-import com.acme_ai_sdk.api.core.immutableEmptyMap
-import com.acme_ai_sdk.api.core.toImmutable
 import com.acme_ai_sdk.api.errors.AcmeAiSdkInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class FileFileCreateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("file_id")
-    @ExcludeMissing
-    private val fileId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("upload_time")
-    @ExcludeMissing
-    private val uploadTime: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val fileId: JsonField<String>,
+    private val status: JsonField<Status>,
+    private val uploadTime: JsonField<OffsetDateTime>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("file_id") @ExcludeMissing fileId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("upload_time")
+        @ExcludeMissing
+        uploadTime: JsonField<OffsetDateTime> = JsonMissing.of(),
+    ) : this(fileId, status, uploadTime, mutableMapOf())
 
     /**
      * Unique identifier for the file
@@ -83,22 +82,15 @@ private constructor(
     @ExcludeMissing
     fun _uploadTime(): JsonField<OffsetDateTime> = uploadTime
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): FileFileCreateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        fileId()
-        status()
-        uploadTime()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -185,7 +177,20 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): FileFileCreateResponse =
-            FileFileCreateResponse(fileId, status, uploadTime, additionalProperties.toImmutable())
+            FileFileCreateResponse(fileId, status, uploadTime, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): FileFileCreateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        fileId()
+        status()
+        uploadTime()
+        validated = true
     }
 
     /** Current processing status */
