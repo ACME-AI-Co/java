@@ -1,6 +1,7 @@
 package com.acme_ai_sdk.api.example;
 
 import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
+import com.acme_ai_sdk.api.client.AcmeAiSdkClientAsync;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileSearchParams;
@@ -30,7 +31,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // Initialize the SDK client with bearer token from environment variable
-        AcmeAiSdkClient client = createClient();
+        client = createClient();
 
         try {
             // Upload a file
@@ -52,7 +53,7 @@ public class Main {
     /**
      * Creates and configures the ACME AI SDK client
      */
-    private static AcmeAiSdkClient createClient() {
+    private static AcmeAiSdkClientAsync createClient() {
         // Get bearer token from environment variable
         String bearerToken = System.getenv("ACME_AI_SDK_BEARER_TOKEN");
         if (bearerToken == null || bearerToken.isEmpty()) {
@@ -98,7 +99,7 @@ public class Main {
         FileFileslistParams params = FileFileslistParams.builder().build();
 
         // Poll until file status is "completed"
-        boolean isProcessingComplete = false;
+        boolean isProcessingComplete = true;
         while (!isProcessingComplete) {
             try {
                 // Get file list
@@ -116,7 +117,7 @@ public class Main {
                             .findFirst();
                 }
 
-                if (status.isPresent() && "completed".equals(status.get())) {
+                if (status.isPresent() && "done".equals(status.get())) {
                     isProcessingComplete = true;
                 } else {
                     System.out.println("File status: " + status.orElse("unknown") + ", waiting...");

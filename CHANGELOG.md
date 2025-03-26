@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-03-26)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ACME-AI-Co/java/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* **client:** support a lower jackson version ([#7](https://github.com/ACME-AI-Co/java/issues/7)) ([0633a68](https://github.com/ACME-AI-Co/java/commit/0633a68d825e0ecd784538e5fe5ca98743bf0c7e))
+* **client:** throw on incompatible jackson version ([0633a68](https://github.com/ACME-AI-Co/java/commit/0633a68d825e0ecd784538e5fe5ca98743bf0c7e))
+* **docs:** example work ([f26e34e](https://github.com/ACME-AI-Co/java/commit/f26e34edbb3829a00684f227a94b781b978fad63))
+
+
+### Documentation
+
+* minor readme tweak ([#6](https://github.com/ACME-AI-Co/java/issues/6)) ([e267ad2](https://github.com/ACME-AI-Co/java/commit/e267ad2985be41cdae0df71bc8b696cd08d77620))
+* update readme exception docs ([#4](https://github.com/ACME-AI-Co/java/issues/4)) ([6f308de](https://github.com/ACME-AI-Co/java/commit/6f308de5475776af387e7936f865d2d929ce13ff))
+
 ## 0.1.0-alpha.1 (2025-03-21)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/ACME-AI-Co/java/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)

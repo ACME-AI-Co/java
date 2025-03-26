@@ -6,9 +6,7 @@ import com.acme_ai_sdk.api.core.ExcludeMissing
 import com.acme_ai_sdk.api.core.JsonField
 import com.acme_ai_sdk.api.core.JsonMissing
 import com.acme_ai_sdk.api.core.JsonValue
-import com.acme_ai_sdk.api.core.NoAutoDetect
 import com.acme_ai_sdk.api.core.checkKnown
-import com.acme_ai_sdk.api.core.immutableEmptyMap
 import com.acme_ai_sdk.api.core.toImmutable
 import com.acme_ai_sdk.api.errors.AcmeAiSdkInvalidDataException
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -16,28 +14,32 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-@NoAutoDetect
 class FileFileSearchResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("file_id")
-    @ExcludeMissing
-    private val fileId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("metadata")
-    @ExcludeMissing
-    private val metadata: JsonField<Metadata> = JsonMissing.of(),
-    @JsonProperty("query") @ExcludeMissing private val query: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("results")
-    @ExcludeMissing
-    private val results: JsonField<List<Result>> = JsonMissing.of(),
-    @JsonProperty("total_results")
-    @ExcludeMissing
-    private val totalResults: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val fileId: JsonField<String>,
+    private val metadata: JsonField<Metadata>,
+    private val query: JsonField<String>,
+    private val results: JsonField<List<Result>>,
+    private val totalResults: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("file_id") @ExcludeMissing fileId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("query") @ExcludeMissing query: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("results")
+        @ExcludeMissing
+        results: JsonField<List<Result>> = JsonMissing.of(),
+        @JsonProperty("total_results")
+        @ExcludeMissing
+        totalResults: JsonField<Long> = JsonMissing.of(),
+    ) : this(fileId, metadata, query, results, totalResults, mutableMapOf())
 
     /**
      * Unique identifier of the searched file
@@ -115,24 +117,15 @@ private constructor(
     @ExcludeMissing
     fun _totalResults(): JsonField<Long> = totalResults
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): FileFileSearchResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        fileId()
-        metadata().ifPresent { it.validate() }
-        query()
-        results().ifPresent { it.forEach { it.validate() } }
-        totalResults()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -264,42 +257,74 @@ private constructor(
                 query,
                 (results ?: JsonMissing.of()).map { it.toImmutable() },
                 totalResults,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): FileFileSearchResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        fileId()
+        metadata().ifPresent { it.validate() }
+        query()
+        results().ifPresent { it.forEach { it.validate() } }
+        totalResults()
+        validated = true
+    }
+
     /** File metadata (only included if requested) */
-    @NoAutoDetect
     class Metadata
-    @JsonCreator
     private constructor(
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("file_id")
-        @ExcludeMissing
-        private val fileId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("file_type")
-        @ExcludeMissing
-        private val fileType: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("filename")
-        @ExcludeMissing
-        private val filename: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("page_count")
-        @ExcludeMissing
-        private val pageCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("processing_options")
-        @ExcludeMissing
-        private val processingOptions: JsonField<ProcessingOptions> = JsonMissing.of(),
-        @JsonProperty("upload_time")
-        @ExcludeMissing
-        private val uploadTime: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("word_count")
-        @ExcludeMissing
-        private val wordCount: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val description: JsonField<String>,
+        private val fileId: JsonField<String>,
+        private val fileType: JsonField<String>,
+        private val filename: JsonField<String>,
+        private val pageCount: JsonField<Long>,
+        private val processingOptions: JsonField<ProcessingOptions>,
+        private val uploadTime: JsonField<OffsetDateTime>,
+        private val wordCount: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("file_id") @ExcludeMissing fileId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("file_type")
+            @ExcludeMissing
+            fileType: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("filename")
+            @ExcludeMissing
+            filename: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("page_count")
+            @ExcludeMissing
+            pageCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("processing_options")
+            @ExcludeMissing
+            processingOptions: JsonField<ProcessingOptions> = JsonMissing.of(),
+            @JsonProperty("upload_time")
+            @ExcludeMissing
+            uploadTime: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("word_count")
+            @ExcludeMissing
+            wordCount: JsonField<Long> = JsonMissing.of(),
+        ) : this(
+            description,
+            fileId,
+            fileType,
+            filename,
+            pageCount,
+            processingOptions,
+            uploadTime,
+            wordCount,
+            mutableMapOf(),
+        )
 
         /**
          * User-provided description of the file
@@ -429,27 +454,15 @@ private constructor(
          */
         @JsonProperty("word_count") @ExcludeMissing fun _wordCount(): JsonField<Long> = wordCount
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
-
-            description()
-            fileId()
-            fileType()
-            filename()
-            pageCount()
-            processingOptions().ifPresent { it.validate() }
-            uploadTime()
-            wordCount()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -621,23 +634,42 @@ private constructor(
                     processingOptions,
                     uploadTime,
                     wordCount,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
 
-        @NoAutoDetect
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            description()
+            fileId()
+            fileType()
+            filename()
+            pageCount()
+            processingOptions().ifPresent { it.validate() }
+            uploadTime()
+            wordCount()
+            validated = true
+        }
+
         class ProcessingOptions
-        @JsonCreator
         private constructor(
-            @JsonProperty("language")
-            @ExcludeMissing
-            private val language: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("ocr")
-            @ExcludeMissing
-            private val ocr: JsonField<Boolean> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val language: JsonField<String>,
+            private val ocr: JsonField<Boolean>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("language")
+                @ExcludeMissing
+                language: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("ocr") @ExcludeMissing ocr: JsonField<Boolean> = JsonMissing.of(),
+            ) : this(language, ocr, mutableMapOf())
 
             /**
              * Language used for processing
@@ -670,21 +702,15 @@ private constructor(
              */
             @JsonProperty("ocr") @ExcludeMissing fun _ocr(): JsonField<Boolean> = ocr
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): ProcessingOptions = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                language()
-                ocr()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -762,7 +788,19 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): ProcessingOptions =
-                    ProcessingOptions(language, ocr, additionalProperties.toImmutable())
+                    ProcessingOptions(language, ocr, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): ProcessingOptions = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                language()
+                ocr()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -801,28 +839,39 @@ private constructor(
             "Metadata{description=$description, fileId=$fileId, fileType=$fileType, filename=$filename, pageCount=$pageCount, processingOptions=$processingOptions, uploadTime=$uploadTime, wordCount=$wordCount, additionalProperties=$additionalProperties}"
     }
 
-    @NoAutoDetect
     class Result
-    @JsonCreator
     private constructor(
-        @JsonProperty("additional_context")
-        @ExcludeMissing
-        private val additionalContext: JsonValue = JsonMissing.of(),
-        @JsonProperty("highlight_ranges")
-        @ExcludeMissing
-        private val highlightRanges: JsonField<List<HighlightRange>> = JsonMissing.of(),
-        @JsonProperty("page_number")
-        @ExcludeMissing
-        private val pageNumber: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("passage")
-        @ExcludeMissing
-        private val passage: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("relevance_score")
-        @ExcludeMissing
-        private val relevanceScore: JsonField<Double> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalContext: JsonValue,
+        private val highlightRanges: JsonField<List<HighlightRange>>,
+        private val pageNumber: JsonField<Long>,
+        private val passage: JsonField<String>,
+        private val relevanceScore: JsonField<Double>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("additional_context")
+            @ExcludeMissing
+            additionalContext: JsonValue = JsonMissing.of(),
+            @JsonProperty("highlight_ranges")
+            @ExcludeMissing
+            highlightRanges: JsonField<List<HighlightRange>> = JsonMissing.of(),
+            @JsonProperty("page_number")
+            @ExcludeMissing
+            pageNumber: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("passage") @ExcludeMissing passage: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("relevance_score")
+            @ExcludeMissing
+            relevanceScore: JsonField<Double> = JsonMissing.of(),
+        ) : this(
+            additionalContext,
+            highlightRanges,
+            pageNumber,
+            passage,
+            relevanceScore,
+            mutableMapOf(),
+        )
 
         /** Additional context information (document-type specific) */
         @JsonProperty("additional_context")
@@ -898,23 +947,15 @@ private constructor(
         @ExcludeMissing
         fun _relevanceScore(): JsonField<Double> = relevanceScore
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Result = apply {
-            if (validated) {
-                return@apply
-            }
-
-            highlightRanges().ifPresent { it.forEach { it.validate() } }
-            pageNumber()
-            passage()
-            relevanceScore()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1046,23 +1087,36 @@ private constructor(
                     pageNumber,
                     passage,
                     relevanceScore,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
 
-        @NoAutoDetect
+        private var validated: Boolean = false
+
+        fun validate(): Result = apply {
+            if (validated) {
+                return@apply
+            }
+
+            highlightRanges().ifPresent { it.forEach { it.validate() } }
+            pageNumber()
+            passage()
+            relevanceScore()
+            validated = true
+        }
+
         class HighlightRange
-        @JsonCreator
         private constructor(
-            @JsonProperty("end")
-            @ExcludeMissing
-            private val end: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("start")
-            @ExcludeMissing
-            private val start: JsonField<Long> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val end: JsonField<Long>,
+            private val start: JsonField<Long>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("end") @ExcludeMissing end: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("start") @ExcludeMissing start: JsonField<Long> = JsonMissing.of(),
+            ) : this(end, start, mutableMapOf())
 
             /**
              * End index of highlight in passage
@@ -1094,21 +1148,15 @@ private constructor(
              */
             @JsonProperty("start") @ExcludeMissing fun _start(): JsonField<Long> = start
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): HighlightRange = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                end()
-                start()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1184,7 +1232,19 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): HighlightRange =
-                    HighlightRange(end, start, additionalProperties.toImmutable())
+                    HighlightRange(end, start, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): HighlightRange = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                end()
+                start()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {

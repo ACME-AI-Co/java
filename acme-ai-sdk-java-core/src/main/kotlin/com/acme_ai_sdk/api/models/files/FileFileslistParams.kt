@@ -4,7 +4,6 @@ package com.acme_ai_sdk.api.models.files
 
 import com.acme_ai_sdk.api.core.Enum
 import com.acme_ai_sdk.api.core.JsonField
-import com.acme_ai_sdk.api.core.NoAutoDetect
 import com.acme_ai_sdk.api.core.Params
 import com.acme_ai_sdk.api.core.http.Headers
 import com.acme_ai_sdk.api.core.http.QueryParams
@@ -45,20 +44,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                limit?.let { put("limit", it.toString()) }
-                offset?.let { put("offset", it.toString()) }
-                sortBy?.let { put("sort_by", it.toString()) }
-                sortOrder?.let { put("sort_order", it.toString()) }
-                status?.let { put("status", it.toString()) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -70,7 +55,6 @@ private constructor(
     }
 
     /** A builder for [FileFileslistParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var limit: Long? = null
@@ -250,6 +234,20 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                limit?.let { put("limit", it.toString()) }
+                offset?.let { put("offset", it.toString()) }
+                sortBy?.let { put("sort_by", it.toString()) }
+                sortOrder?.let { put("sort_order", it.toString()) }
+                status?.let { put("status", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     /** Field to sort by */
     class SortBy @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
