@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-03-29)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/ACME-AI-Co/java/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Bug Fixes
+
+* **client:** don't call `validate()` during deserialization if we don't have to ([#9](https://github.com/ACME-AI-Co/java/issues/9)) ([70b686e](https://github.com/ACME-AI-Co/java/commit/70b686ee76a3d6d48e8cac857ce562b9c99d44fc))
+
 ## 0.1.0-alpha.2 (2025-03-26)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ACME-AI-Co/java/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
