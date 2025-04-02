@@ -2,6 +2,8 @@
 
 package com.acme_ai_sdk.api.models.files
 
+import com.acme_ai_sdk.api.core.jsonMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
@@ -46,5 +48,36 @@ internal class FileFileslistResponseTest {
         assertThat(fileFileslistResponse.limit()).contains(0L)
         assertThat(fileFileslistResponse.offset()).contains(0L)
         assertThat(fileFileslistResponse.total()).contains(0L)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val fileFileslistResponse =
+            FileFileslistResponse.builder()
+                .addFile(
+                    FileFileslistResponse.File.builder()
+                        .completionTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .error("error")
+                        .fileId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .fileSize(0L)
+                        .filename("filename")
+                        .status(FileFileslistResponse.File.Status.PENDING)
+                        .uploadTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .build()
+                )
+                .limit(0L)
+                .offset(0L)
+                .total(0L)
+                .build()
+
+        val roundtrippedFileFileslistResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(fileFileslistResponse),
+                jacksonTypeRef<FileFileslistResponse>(),
+            )
+
+        assertThat(roundtrippedFileFileslistResponse).isEqualTo(fileFileslistResponse)
     }
 }

@@ -17,6 +17,7 @@ import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class FileFileSearchResponse
 private constructor(
@@ -275,6 +276,27 @@ private constructor(
         totalResults()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: AcmeAiSdkInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (fileId.asKnown().isPresent) 1 else 0) +
+            (metadata.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (query.asKnown().isPresent) 1 else 0) +
+            (results.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (totalResults.asKnown().isPresent) 1 else 0)
 
     /** File metadata (only included if requested) */
     class Metadata
@@ -656,6 +678,31 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (description.asKnown().isPresent) 1 else 0) +
+                (if (fileId.asKnown().isPresent) 1 else 0) +
+                (if (fileType.asKnown().isPresent) 1 else 0) +
+                (if (filename.asKnown().isPresent) 1 else 0) +
+                (if (pageCount.asKnown().isPresent) 1 else 0) +
+                (processingOptions.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (uploadTime.asKnown().isPresent) 1 else 0) +
+                (if (wordCount.asKnown().isPresent) 1 else 0)
+
         class ProcessingOptions
         private constructor(
             private val language: JsonField<String>,
@@ -802,6 +849,25 @@ private constructor(
                 ocr()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: AcmeAiSdkInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (language.asKnown().isPresent) 1 else 0) +
+                    (if (ocr.asKnown().isPresent) 1 else 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1105,6 +1171,27 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (highlightRanges.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (pageNumber.asKnown().isPresent) 1 else 0) +
+                (if (passage.asKnown().isPresent) 1 else 0) +
+                (if (relevanceScore.asKnown().isPresent) 1 else 0)
+
         class HighlightRange
         private constructor(
             private val end: JsonField<Long>,
@@ -1246,6 +1333,24 @@ private constructor(
                 start()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: AcmeAiSdkInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (end.asKnown().isPresent) 1 else 0) + (if (start.asKnown().isPresent) 1 else 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
