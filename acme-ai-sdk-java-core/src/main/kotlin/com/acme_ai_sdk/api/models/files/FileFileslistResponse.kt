@@ -18,6 +18,7 @@ import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class FileFileslistResponse
 private constructor(
@@ -233,6 +234,26 @@ private constructor(
         total()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: AcmeAiSdkInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (files.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (limit.asKnown().isPresent) 1 else 0) +
+            (if (offset.asKnown().isPresent) 1 else 0) +
+            (if (total.asKnown().isPresent) 1 else 0)
 
     class File
     private constructor(
@@ -564,10 +585,34 @@ private constructor(
             fileId()
             fileSize()
             filename()
-            status()
+            status().ifPresent { it.validate() }
             uploadTime()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (completionTime.asKnown().isPresent) 1 else 0) +
+                (if (error.asKnown().isPresent) 1 else 0) +
+                (if (fileId.asKnown().isPresent) 1 else 0) +
+                (if (fileSize.asKnown().isPresent) 1 else 0) +
+                (if (filename.asKnown().isPresent) 1 else 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (uploadTime.asKnown().isPresent) 1 else 0)
 
         /** Current processing status */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -670,6 +715,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     AcmeAiSdkInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Status = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: AcmeAiSdkInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

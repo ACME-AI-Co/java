@@ -457,6 +457,14 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -609,6 +617,14 @@ private constructor(
             ocr()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
