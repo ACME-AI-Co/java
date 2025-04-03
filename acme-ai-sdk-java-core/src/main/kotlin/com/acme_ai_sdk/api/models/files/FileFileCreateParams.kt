@@ -111,6 +111,17 @@ private constructor(
             additionalQueryParams = fileFileCreateParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [file]
+         * - [description]
+         * - [processingOptions]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The file to upload */
         fun file(file: InputStream) = apply { body.file(file) }
 
@@ -276,8 +287,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic
-    internal fun _body(): Map<String, MultipartField<*>> =
+    fun _body(): Map<String, MultipartField<*>> =
         mapOf(
                 "file" to _file(),
                 "description" to _description(),
