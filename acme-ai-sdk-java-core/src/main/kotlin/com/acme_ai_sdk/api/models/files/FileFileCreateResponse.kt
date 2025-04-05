@@ -41,7 +41,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun fileId(): Optional<String> = Optional.ofNullable(fileId.getNullable("file_id"))
+    fun fileId(): Optional<String> = fileId.getOptional("file_id")
 
     /**
      * Current processing status
@@ -49,7 +49,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun status(): Optional<Status> = Optional.ofNullable(status.getNullable("status"))
+    fun status(): Optional<Status> = status.getOptional("status")
 
     /**
      * Time the file was uploaded
@@ -57,8 +57,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun uploadTime(): Optional<OffsetDateTime> =
-        Optional.ofNullable(uploadTime.getNullable("upload_time"))
+    fun uploadTime(): Optional<OffsetDateTime> = uploadTime.getOptional("upload_time")
 
     /**
      * Returns the raw JSON value of [fileId].
