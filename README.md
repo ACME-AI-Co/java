@@ -450,6 +450,19 @@ JsonValue complexValue = JsonValue.from(Map.of(
 ));
 ```
 
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/core/Values.kt):
+
+```java
+import com.acme_ai_sdk.api.core.JsonMissing;
+import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
+
+FileFileCreateParams params = FileFileCreateParams.builder()
+    .file(JsonMissing.of())
+    .build();
+```
+
 ### Response properties
 
 To access undocumented response properties, call the `_additionalProperties()` method:
