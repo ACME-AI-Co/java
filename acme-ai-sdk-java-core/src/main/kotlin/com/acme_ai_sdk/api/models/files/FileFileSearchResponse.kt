@@ -48,7 +48,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun fileId(): Optional<String> = Optional.ofNullable(fileId.getNullable("file_id"))
+    fun fileId(): Optional<String> = fileId.getOptional("file_id")
 
     /**
      * File metadata (only included if requested)
@@ -56,7 +56,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * The search query used
@@ -64,13 +64,13 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun query(): Optional<String> = Optional.ofNullable(query.getNullable("query"))
+    fun query(): Optional<String> = query.getOptional("query")
 
     /**
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun results(): Optional<List<Result>> = Optional.ofNullable(results.getNullable("results"))
+    fun results(): Optional<List<Result>> = results.getOptional("results")
 
     /**
      * Total number of results found
@@ -78,8 +78,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun totalResults(): Optional<Long> =
-        Optional.ofNullable(totalResults.getNullable("total_results"))
+    fun totalResults(): Optional<Long> = totalResults.getOptional("total_results")
 
     /**
      * Returns the raw JSON value of [fileId].
@@ -354,8 +353,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Unique identifier for the file
@@ -363,7 +361,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileId(): Optional<String> = Optional.ofNullable(fileId.getNullable("file_id"))
+        fun fileId(): Optional<String> = fileId.getOptional("file_id")
 
         /**
          * MIME type of the file
@@ -371,7 +369,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileType(): Optional<String> = Optional.ofNullable(fileType.getNullable("file_type"))
+        fun fileType(): Optional<String> = fileType.getOptional("file_type")
 
         /**
          * Original name of the file
@@ -379,7 +377,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun filename(): Optional<String> = Optional.ofNullable(filename.getNullable("filename"))
+        fun filename(): Optional<String> = filename.getOptional("filename")
 
         /**
          * Number of pages (for documents)
@@ -387,14 +385,14 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun pageCount(): Optional<Long> = Optional.ofNullable(pageCount.getNullable("page_count"))
+        fun pageCount(): Optional<Long> = pageCount.getOptional("page_count")
 
         /**
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
         fun processingOptions(): Optional<ProcessingOptions> =
-            Optional.ofNullable(processingOptions.getNullable("processing_options"))
+            processingOptions.getOptional("processing_options")
 
         /**
          * Time the file was uploaded
@@ -402,8 +400,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun uploadTime(): Optional<OffsetDateTime> =
-            Optional.ofNullable(uploadTime.getNullable("upload_time"))
+        fun uploadTime(): Optional<OffsetDateTime> = uploadTime.getOptional("upload_time")
 
         /**
          * Approximate word count
@@ -411,7 +408,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun wordCount(): Optional<Long> = Optional.ofNullable(wordCount.getNullable("word_count"))
+        fun wordCount(): Optional<Long> = wordCount.getOptional("word_count")
 
         /**
          * Returns the raw JSON value of [description].
@@ -724,7 +721,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun language(): Optional<String> = Optional.ofNullable(language.getNullable("language"))
+            fun language(): Optional<String> = language.getOptional("language")
 
             /**
              * Whether OCR was used
@@ -732,7 +729,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun ocr(): Optional<Boolean> = Optional.ofNullable(ocr.getNullable("ocr"))
+            fun ocr(): Optional<Boolean> = ocr.getOptional("ocr")
 
             /**
              * Returns the raw JSON value of [language].
@@ -951,7 +948,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun highlightRanges(): Optional<List<HighlightRange>> =
-            Optional.ofNullable(highlightRanges.getNullable("highlight_ranges"))
+            highlightRanges.getOptional("highlight_ranges")
 
         /**
          * Page number where the match was found (if applicable)
@@ -959,8 +956,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun pageNumber(): Optional<Long> =
-            Optional.ofNullable(pageNumber.getNullable("page_number"))
+        fun pageNumber(): Optional<Long> = pageNumber.getOptional("page_number")
 
         /**
          * Text passage containing the match with surrounding context
@@ -968,7 +964,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun passage(): Optional<String> = Optional.ofNullable(passage.getNullable("passage"))
+        fun passage(): Optional<String> = passage.getOptional("passage")
 
         /**
          * Relevance score of the result (0-1)
@@ -976,8 +972,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun relevanceScore(): Optional<Double> =
-            Optional.ofNullable(relevanceScore.getNullable("relevance_score"))
+        fun relevanceScore(): Optional<Double> = relevanceScore.getOptional("relevance_score")
 
         /**
          * Returns the raw JSON value of [highlightRanges].
@@ -1211,7 +1206,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun end(): Optional<Long> = Optional.ofNullable(end.getNullable("end"))
+            fun end(): Optional<Long> = end.getOptional("end")
 
             /**
              * Start index of highlight in passage
@@ -1219,7 +1214,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun start(): Optional<Long> = Optional.ofNullable(start.getNullable("start"))
+            fun start(): Optional<Long> = start.getOptional("start")
 
             /**
              * Returns the raw JSON value of [end].

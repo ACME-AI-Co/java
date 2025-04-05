@@ -41,7 +41,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun files(): Optional<List<File>> = Optional.ofNullable(files.getNullable("files"))
+    fun files(): Optional<List<File>> = files.getOptional("files")
 
     /**
      * Maximum number of files returned
@@ -49,7 +49,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun limit(): Optional<Long> = Optional.ofNullable(limit.getNullable("limit"))
+    fun limit(): Optional<Long> = limit.getOptional("limit")
 
     /**
      * Number of files skipped
@@ -57,7 +57,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun offset(): Optional<Long> = Optional.ofNullable(offset.getNullable("offset"))
+    fun offset(): Optional<Long> = offset.getOptional("offset")
 
     /**
      * Total number of files matching the filter
@@ -65,7 +65,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun total(): Optional<Long> = Optional.ofNullable(total.getNullable("total"))
+    fun total(): Optional<Long> = total.getOptional("total")
 
     /**
      * Returns the raw JSON value of [files].
@@ -300,7 +300,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun completionTime(): Optional<OffsetDateTime> =
-            Optional.ofNullable(completionTime.getNullable("completion_time"))
+            completionTime.getOptional("completion_time")
 
         /**
          * Error message (if status is 'failed')
@@ -308,7 +308,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun error(): Optional<String> = Optional.ofNullable(error.getNullable("error"))
+        fun error(): Optional<String> = error.getOptional("error")
 
         /**
          * Unique identifier for the file
@@ -316,7 +316,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileId(): Optional<String> = Optional.ofNullable(fileId.getNullable("file_id"))
+        fun fileId(): Optional<String> = fileId.getOptional("file_id")
 
         /**
          * Size of the file in bytes
@@ -324,7 +324,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileSize(): Optional<Long> = Optional.ofNullable(fileSize.getNullable("file_size"))
+        fun fileSize(): Optional<Long> = fileSize.getOptional("file_size")
 
         /**
          * Original name of the file
@@ -332,7 +332,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun filename(): Optional<String> = Optional.ofNullable(filename.getNullable("filename"))
+        fun filename(): Optional<String> = filename.getOptional("filename")
 
         /**
          * Current processing status
@@ -340,7 +340,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun status(): Optional<Status> = Optional.ofNullable(status.getNullable("status"))
+        fun status(): Optional<Status> = status.getOptional("status")
 
         /**
          * Time the file was uploaded
@@ -348,8 +348,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun uploadTime(): Optional<OffsetDateTime> =
-            Optional.ofNullable(uploadTime.getNullable("upload_time"))
+        fun uploadTime(): Optional<OffsetDateTime> = uploadTime.getOptional("upload_time")
 
         /**
          * Returns the raw JSON value of [completionTime].
