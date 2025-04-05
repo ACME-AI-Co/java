@@ -320,15 +320,14 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.value.getNullable("description"))
+        fun description(): Optional<String> = description.value.getOptional("description")
 
         /**
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
         fun processingOptions(): Optional<ProcessingOptions> =
-            Optional.ofNullable(processingOptions.value.getNullable("processing_options"))
+            processingOptions.value.getOptional("processing_options")
 
         /**
          * Returns the raw multipart value of [file].
@@ -506,8 +505,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun language(): Optional<String> =
-            Optional.ofNullable(language.value.getNullable("language"))
+        fun language(): Optional<String> = language.value.getOptional("language")
 
         /**
          * Enable OCR for image-based documents
@@ -515,7 +513,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun ocr(): Optional<Boolean> = Optional.ofNullable(ocr.value.getNullable("ocr"))
+        fun ocr(): Optional<Boolean> = ocr.value.getOptional("ocr")
 
         /**
          * Returns the raw multipart value of [language].
