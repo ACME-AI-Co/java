@@ -184,7 +184,12 @@ private constructor(
 
         fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
 
-        fun fromEnv() = apply { System.getenv("ACME_AI_SDK_BEARER_TOKEN")?.let { bearerToken(it) } }
+        fun baseUrl(): String = baseUrl
+
+        fun fromEnv() = apply {
+            System.getenv("ACME_AI_SDK_BASE_URL")?.let { baseUrl(it) }
+            System.getenv("ACME_AI_SDK_BEARER_TOKEN")?.let { bearerToken(it) }
+        }
 
         /**
          * Returns an immutable instance of [ClientOptions].

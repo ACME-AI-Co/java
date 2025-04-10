@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.acme_ai_sdk.api/acme-ai-sdk-java)](https://central.sonatype.com/artifact/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2)
-[![javadoc](https://javadoc.io/badge2/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2/javadoc.svg)](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2)
+[![Maven Central](https://img.shields.io/maven-central/v/com.acme_ai_sdk.api/acme-ai-sdk-java)](https://central.sonatype.com/artifact/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.3)
+[![javadoc](https://javadoc.io/badge2/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.3/javadoc.svg)](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.3)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.acme-ai-sdk.com). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.2).
+The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.acme-ai-sdk.com). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.acme_ai_sdk.api/acme-ai-sdk-java/0.1.0-alpha.3).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [docs.acme-ai-sdk.com](https://docs.a
 ### Gradle
 
 ```kotlin
-implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.2")
+implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.3")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("com.acme_ai_sdk.api:acme-ai-sdk-java:0.1.0-alpha.2")
 <dependency>
   <groupId>com.acme_ai_sdk.api</groupId>
   <artifactId>acme-ai-sdk-java</artifactId>
-  <version>0.1.0-alpha.2</version>
+  <version>0.1.0-alpha.3</version>
 </dependency>
 ```
 
@@ -51,11 +51,11 @@ import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 FileFileCreateResponse response = client.files().fileCreate(params);
 ```
@@ -68,7 +68,7 @@ Configure the client using environment variables:
 import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 ```
 
@@ -90,7 +90,7 @@ import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.builder()
-    // Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+    // Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
     .fromEnv()
     .bearerToken("My Bearer Token")
     .build();
@@ -98,9 +98,10 @@ AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter        | Environment variable       | Required | Default value |
-| ------------- | -------------------------- | -------- | ------------- |
-| `bearerToken` | `ACME_AI_SDK_BEARER_TOKEN` | true     | -             |
+| Setter        | Environment variable       | Required | Default value                  |
+| ------------- | -------------------------- | -------- | ------------------------------ |
+| `bearerToken` | `ACME_AI_SDK_BEARER_TOKEN` | true     | -                              |
+| `baseUrl`     | `ACME_AI_SDK_BASE_URL`     | true     | `"https://api.example.com/v1"` |
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -131,11 +132,11 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 CompletableFuture<FileFileCreateResponse> response = client.async().files().fileCreate(params);
 ```
@@ -149,11 +150,11 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClientAsync client = AcmeAiSdkOkHttpClientAsync.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 CompletableFuture<FileFileCreateResponse> response = client.files().fileCreate(params);
 ```
@@ -233,7 +234,7 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 HttpResponseFor<FileFileCreateResponse> response = client.files().withRawResponse().fileCreate(params);
 
@@ -448,6 +449,19 @@ JsonValue complexValue = JsonValue.from(Map.of(
     3, 4
   )
 ));
+```
+
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/core/Values.kt):
+
+```java
+import com.acme_ai_sdk.api.core.JsonMissing;
+import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
+
+FileFileCreateParams params = FileFileCreateParams.builder()
+    .file(JsonMissing.of())
+    .build();
 ```
 
 ### Response properties
