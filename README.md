@@ -51,7 +51,7 @@ import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
@@ -68,7 +68,7 @@ Configure the client using environment variables:
 import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 ```
 
@@ -90,7 +90,7 @@ import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.builder()
-    // Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+    // Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
     .fromEnv()
     .bearerToken("My Bearer Token")
     .build();
@@ -98,9 +98,10 @@ AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter        | Environment variable       | Required | Default value |
-| ------------- | -------------------------- | -------- | ------------- |
-| `bearerToken` | `ACME_AI_SDK_BEARER_TOKEN` | true     | -             |
+| Setter        | Environment variable       | Required | Default value                  |
+| ------------- | -------------------------- | -------- | ------------------------------ |
+| `bearerToken` | `ACME_AI_SDK_BEARER_TOKEN` | true     | -                              |
+| `baseUrl`     | `ACME_AI_SDK_BASE_URL`     | true     | `"https://api.example.com/v1"` |
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -131,7 +132,7 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
@@ -149,7 +150,7 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `ACME_AI_SDK_BEARER_TOKEN` environment variable
+// Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClientAsync client = AcmeAiSdkOkHttpClientAsync.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
