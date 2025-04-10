@@ -55,7 +55,7 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 FileFileCreateResponse response = client.files().fileCreate(params);
 ```
@@ -136,7 +136,7 @@ import java.util.concurrent.CompletableFuture;
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 CompletableFuture<FileFileCreateResponse> response = client.async().files().fileCreate(params);
 ```
@@ -154,7 +154,7 @@ import java.util.concurrent.CompletableFuture;
 AcmeAiSdkClientAsync client = AcmeAiSdkOkHttpClientAsync.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 CompletableFuture<FileFileCreateResponse> response = client.files().fileCreate(params);
 ```
@@ -234,7 +234,7 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("some content".toByteArray())
+    .file("REPLACE_ME".toByteArray())
     .build();
 HttpResponseFor<FileFileCreateResponse> response = client.files().withRawResponse().fileCreate(params);
 
