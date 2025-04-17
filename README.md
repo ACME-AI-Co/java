@@ -376,6 +376,42 @@ AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.builder()
     .build();
 ```
 
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `acme-ai-sdk-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`AcmeAiSdkClient`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClient.kt), [`AcmeAiSdkClientAsync`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientAsync.kt), [`AcmeAiSdkClientImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientImpl.kt), and [`AcmeAiSdkClientAsyncImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientAsyncImpl.kt), all of which can work with any HTTP client
+- `acme-ai-sdk-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`AcmeAiSdkOkHttpClient`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/AcmeAiSdkOkHttpClient.kt) and [`AcmeAiSdkOkHttpClientAsync`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/AcmeAiSdkOkHttpClientAsync.kt), which provide a way to construct [`AcmeAiSdkClientImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientImpl.kt) and [`AcmeAiSdkClientAsyncImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientAsyncImpl.kt), respectively, using OkHttp
+- `acme-ai-sdk-java`
+  - Depends on and exposes the APIs of both `acme-ai-sdk-java-core` and `acme-ai-sdk-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`acme-ai-sdk-java` dependency](#installation) with `acme-ai-sdk-java-core`
+2. Copy `acme-ai-sdk-java-client-okhttp`'s [`OkHttpClient`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`AcmeAiSdkClientImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientImpl.kt) or [`AcmeAiSdkClientAsyncImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientAsyncImpl.kt), similarly to [`AcmeAiSdkOkHttpClient`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/AcmeAiSdkOkHttpClient.kt) or [`AcmeAiSdkOkHttpClientAsync`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/AcmeAiSdkOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`acme-ai-sdk-java` dependency](#installation) with `acme-ai-sdk-java-core`
+2. Write a class that implements the [`HttpClient`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/core/http/HttpClient.kt) interface
+3. Construct [`AcmeAiSdkClientImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientImpl.kt) or [`AcmeAiSdkClientAsyncImpl`](acme-ai-sdk-java-core/src/main/kotlin/com/acme_ai_sdk/api/client/AcmeAiSdkClientAsyncImpl.kt), similarly to [`AcmeAiSdkOkHttpClient`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/AcmeAiSdkOkHttpClient.kt) or [`AcmeAiSdkOkHttpClientAsync`](acme-ai-sdk-java-client-okhttp/src/main/kotlin/com/acme_ai_sdk/api/client/okhttp/AcmeAiSdkOkHttpClientAsync.kt), using your new client class
+
 ## Undocumented API functionality
 
 The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
