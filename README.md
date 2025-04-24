@@ -50,12 +50,13 @@ import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
+import java.io.ByteArrayInputStream;
 
 // Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("REPLACE_ME".toByteArray())
+    .file(ByteArrayInputStream("REPLACE_ME".getBytes()))
     .build();
 FileFileCreateResponse response = client.files().fileCreate(params);
 ```
@@ -130,13 +131,14 @@ import com.acme_ai_sdk.api.client.AcmeAiSdkClient;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
+import java.io.ByteArrayInputStream;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClient client = AcmeAiSdkOkHttpClient.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("REPLACE_ME".toByteArray())
+    .file(ByteArrayInputStream("REPLACE_ME".getBytes()))
     .build();
 CompletableFuture<FileFileCreateResponse> response = client.async().files().fileCreate(params);
 ```
@@ -148,13 +150,14 @@ import com.acme_ai_sdk.api.client.AcmeAiSdkClientAsync;
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClientAsync;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
+import java.io.ByteArrayInputStream;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `ACME_AI_SDK_BEARER_TOKEN` and `ACME_AI_SDK_BASE_URL` environment variables
 AcmeAiSdkClientAsync client = AcmeAiSdkOkHttpClientAsync.fromEnv();
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("REPLACE_ME".toByteArray())
+    .file(ByteArrayInputStream("REPLACE_ME".getBytes()))
     .build();
 CompletableFuture<FileFileCreateResponse> response = client.files().fileCreate(params);
 ```
@@ -232,9 +235,10 @@ import com.acme_ai_sdk.api.core.http.Headers;
 import com.acme_ai_sdk.api.core.http.HttpResponseFor;
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
+import java.io.ByteArrayInputStream;
 
 FileFileCreateParams params = FileFileCreateParams.builder()
-    .file("REPLACE_ME".toByteArray())
+    .file(ByteArrayInputStream("REPLACE_ME".getBytes()))
     .build();
 HttpResponseFor<FileFileCreateResponse> response = client.files().withRawResponse().fileCreate(params);
 
@@ -337,6 +341,7 @@ To set a custom timeout, configure the method call using the `timeout` method:
 ```java
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
+import java.io.ByteArrayInputStream;
 
 FileFileCreateResponse response = client.files().fileCreate(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -585,6 +590,7 @@ Or configure the method call to validate the response using the `responseValidat
 ```java
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
+import java.io.ByteArrayInputStream;
 
 FileFileCreateResponse response = client.files().fileCreate(
   params, RequestOptions.builder().responseValidation(true).build()
