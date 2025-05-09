@@ -908,7 +908,7 @@ private constructor(
         private val highlightRanges: JsonField<List<HighlightRange>>,
         private val pageNumber: JsonField<Long>,
         private val passage: JsonField<String>,
-        private val relevanceScore: JsonField<Double>,
+        private val relevanceScore: JsonField<Float>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -926,7 +926,7 @@ private constructor(
             @JsonProperty("passage") @ExcludeMissing passage: JsonField<String> = JsonMissing.of(),
             @JsonProperty("relevance_score")
             @ExcludeMissing
-            relevanceScore: JsonField<Double> = JsonMissing.of(),
+            relevanceScore: JsonField<Float> = JsonMissing.of(),
         ) : this(
             additionalContext,
             highlightRanges,
@@ -972,7 +972,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun relevanceScore(): Optional<Double> = relevanceScore.getOptional("relevance_score")
+        fun relevanceScore(): Optional<Float> = relevanceScore.getOptional("relevance_score")
 
         /**
          * Returns the raw JSON value of [highlightRanges].
@@ -1006,7 +1006,7 @@ private constructor(
          */
         @JsonProperty("relevance_score")
         @ExcludeMissing
-        fun _relevanceScore(): JsonField<Double> = relevanceScore
+        fun _relevanceScore(): JsonField<Float> = relevanceScore
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1033,7 +1033,7 @@ private constructor(
             private var highlightRanges: JsonField<MutableList<HighlightRange>>? = null
             private var pageNumber: JsonField<Long> = JsonMissing.of()
             private var passage: JsonField<String> = JsonMissing.of()
-            private var relevanceScore: JsonField<Double> = JsonMissing.of()
+            private var relevanceScore: JsonField<Float> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1103,17 +1103,16 @@ private constructor(
             fun passage(passage: JsonField<String>) = apply { this.passage = passage }
 
             /** Relevance score of the result (0-1) */
-            fun relevanceScore(relevanceScore: Double) =
-                relevanceScore(JsonField.of(relevanceScore))
+            fun relevanceScore(relevanceScore: Float) = relevanceScore(JsonField.of(relevanceScore))
 
             /**
              * Sets [Builder.relevanceScore] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.relevanceScore] with a well-typed [Double] value
+             * You should usually call [Builder.relevanceScore] with a well-typed [Float] value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun relevanceScore(relevanceScore: JsonField<Double>) = apply {
+            fun relevanceScore(relevanceScore: JsonField<Float>) = apply {
                 this.relevanceScore = relevanceScore
             }
 
