@@ -339,9 +339,7 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
-import java.io.ByteArrayInputStream;
 
 FileFileCreateResponse response = client.files().fileCreate(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -588,9 +586,7 @@ FileFileCreateResponse response = client.files().fileCreate(params).validate();
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import com.acme_ai_sdk.api.models.files.FileFileCreateParams;
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse;
-import java.io.ByteArrayInputStream;
 
 FileFileCreateResponse response = client.files().fileCreate(
   params, RequestOptions.builder().responseValidation(true).build()
