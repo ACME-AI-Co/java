@@ -16,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
  */
 class FileFileSearchParams
 private constructor(
-    private val fileId: String,
+    private val fileId: String?,
     private val query: String,
     private val contextSize: Long?,
     private val includeMetadata: Boolean?,
@@ -25,7 +25,7 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun fileId(): String = fileId
+    fun fileId(): Optional<String> = Optional.ofNullable(fileId)
 
     /** Natural language search query */
     fun query(): String = query
@@ -52,7 +52,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .fileId()
          * .query()
          * ```
          */
@@ -81,7 +80,10 @@ private constructor(
             additionalQueryParams = fileFileSearchParams.additionalQueryParams.toBuilder()
         }
 
-        fun fileId(fileId: String) = apply { this.fileId = fileId }
+        fun fileId(fileId: String?) = apply { this.fileId = fileId }
+
+        /** Alias for calling [Builder.fileId] with `fileId.orElse(null)`. */
+        fun fileId(fileId: Optional<String>) = fileId(fileId.getOrNull())
 
         /** Natural language search query */
         fun query(query: String) = apply { this.query = query }
@@ -233,7 +235,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .fileId()
          * .query()
          * ```
          *
@@ -241,7 +242,7 @@ private constructor(
          */
         fun build(): FileFileSearchParams =
             FileFileSearchParams(
-                checkRequired("fileId", fileId),
+                fileId,
                 checkRequired("query", query),
                 contextSize,
                 includeMetadata,
@@ -253,7 +254,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> fileId
+            0 -> fileId ?: ""
             else -> ""
         }
 

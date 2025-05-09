@@ -37,6 +37,20 @@ interface FileServiceAsync {
      * Search for content within a processed file using natural language queries. Returns relevant
      * passages and their context.
      */
+    fun fileSearch(
+        fileId: String,
+        params: FileFileSearchParams,
+    ): CompletableFuture<FileFileSearchResponse> = fileSearch(fileId, params, RequestOptions.none())
+
+    /** @see [fileSearch] */
+    fun fileSearch(
+        fileId: String,
+        params: FileFileSearchParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<FileFileSearchResponse> =
+        fileSearch(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+    /** @see [fileSearch] */
     fun fileSearch(params: FileFileSearchParams): CompletableFuture<FileFileSearchResponse> =
         fileSearch(params, RequestOptions.none())
 
@@ -91,6 +105,23 @@ interface FileServiceAsync {
          * Returns a raw HTTP response for `get /files/{file_id}/search`, but is otherwise the same
          * as [FileServiceAsync.fileSearch].
          */
+        @MustBeClosed
+        fun fileSearch(
+            fileId: String,
+            params: FileFileSearchParams,
+        ): CompletableFuture<HttpResponseFor<FileFileSearchResponse>> =
+            fileSearch(fileId, params, RequestOptions.none())
+
+        /** @see [fileSearch] */
+        @MustBeClosed
+        fun fileSearch(
+            fileId: String,
+            params: FileFileSearchParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<FileFileSearchResponse>> =
+            fileSearch(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+        /** @see [fileSearch] */
         @MustBeClosed
         fun fileSearch(
             params: FileFileSearchParams
