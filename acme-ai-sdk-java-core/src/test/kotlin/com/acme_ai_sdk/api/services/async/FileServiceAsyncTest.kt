@@ -27,7 +27,7 @@ internal class FileServiceAsyncTest {
         val responseFuture =
             fileServiceAsync.fileCreate(
                 FileFileCreateParams.builder()
-                    .file("some content".toByteArray())
+                    .file("some content".byteInputStream())
                     .description("description")
                     .processingOptions(
                         FileFileCreateParams.ProcessingOptions.builder()

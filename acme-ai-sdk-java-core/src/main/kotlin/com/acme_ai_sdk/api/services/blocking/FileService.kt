@@ -36,6 +36,18 @@ interface FileService {
      * Search for content within a processed file using natural language queries. Returns relevant
      * passages and their context.
      */
+    fun fileSearch(fileId: String, params: FileFileSearchParams): FileFileSearchResponse =
+        fileSearch(fileId, params, RequestOptions.none())
+
+    /** @see [fileSearch] */
+    fun fileSearch(
+        fileId: String,
+        params: FileFileSearchParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): FileFileSearchResponse =
+        fileSearch(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+    /** @see [fileSearch] */
     fun fileSearch(params: FileFileSearchParams): FileFileSearchResponse =
         fileSearch(params, RequestOptions.none())
 
@@ -86,6 +98,23 @@ interface FileService {
          * Returns a raw HTTP response for `get /files/{file_id}/search`, but is otherwise the same
          * as [FileService.fileSearch].
          */
+        @MustBeClosed
+        fun fileSearch(
+            fileId: String,
+            params: FileFileSearchParams,
+        ): HttpResponseFor<FileFileSearchResponse> =
+            fileSearch(fileId, params, RequestOptions.none())
+
+        /** @see [fileSearch] */
+        @MustBeClosed
+        fun fileSearch(
+            fileId: String,
+            params: FileFileSearchParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FileFileSearchResponse> =
+            fileSearch(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+        /** @see [fileSearch] */
         @MustBeClosed
         fun fileSearch(params: FileFileSearchParams): HttpResponseFor<FileFileSearchResponse> =
             fileSearch(params, RequestOptions.none())

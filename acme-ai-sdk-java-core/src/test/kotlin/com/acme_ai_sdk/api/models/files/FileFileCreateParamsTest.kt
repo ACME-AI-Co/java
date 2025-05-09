@@ -14,7 +14,7 @@ internal class FileFileCreateParamsTest {
     @Test
     fun create() {
         FileFileCreateParams.builder()
-            .file("some content".toByteArray())
+            .file("some content".byteInputStream())
             .description("description")
             .processingOptions(
                 FileFileCreateParams.ProcessingOptions.builder()
@@ -30,7 +30,7 @@ internal class FileFileCreateParamsTest {
     fun body() {
         val params =
             FileFileCreateParams.builder()
-                .file("some content".toByteArray())
+                .file("some content".byteInputStream())
                 .description("description")
                 .processingOptions(
                     FileFileCreateParams.ProcessingOptions.builder()
@@ -52,7 +52,7 @@ internal class FileFileCreateParamsTest {
             )
             .isEqualTo(
                 mapOf(
-                        "file" to MultipartField.of("some content".toByteArray()),
+                        "file" to MultipartField.of("some content".byteInputStream()),
                         "description" to MultipartField.of("description"),
                         "processing_options" to
                             MultipartField.of(
@@ -71,7 +71,7 @@ internal class FileFileCreateParamsTest {
     @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun bodyWithoutOptionalFields() {
-        val params = FileFileCreateParams.builder().file("some content".toByteArray()).build()
+        val params = FileFileCreateParams.builder().file("some content".byteInputStream()).build()
 
         val body = params._body()
 
@@ -84,7 +84,7 @@ internal class FileFileCreateParamsTest {
                 InputStream::class.java,
             )
             .isEqualTo(
-                mapOf("file" to MultipartField.of("some content".toByteArray())).mapValues {
+                mapOf("file" to MultipartField.of("some content".byteInputStream())).mapValues {
                     (_, field) ->
                     field.map { (it as? ByteArray)?.inputStream() ?: it }
                 }

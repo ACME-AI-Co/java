@@ -27,7 +27,7 @@ internal class FileServiceTest {
         val response =
             fileService.fileCreate(
                 FileFileCreateParams.builder()
-                    .file("some content".toByteArray())
+                    .file("some content".byteInputStream())
                     .description("description")
                     .processingOptions(
                         FileFileCreateParams.ProcessingOptions.builder()
