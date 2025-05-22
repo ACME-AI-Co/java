@@ -111,6 +111,17 @@ private constructor(
             additionalQueryParams = fileFileCreateParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [file]
+         * - [description]
+         * - [processingOptions]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The file to upload */
         fun file(file: InputStream) = apply { body.file(file) }
 
@@ -276,8 +287,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic
-    internal fun _body(): Map<String, MultipartField<*>> =
+    fun _body(): Map<String, MultipartField<*>> =
         mapOf(
                 "file" to _file(),
                 "description" to _description(),
@@ -310,15 +320,14 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.value.getNullable("description"))
+        fun description(): Optional<String> = description.value.getOptional("description")
 
         /**
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
         fun processingOptions(): Optional<ProcessingOptions> =
-            Optional.ofNullable(processingOptions.value.getNullable("processing_options"))
+            processingOptions.value.getOptional("processing_options")
 
         /**
          * Returns the raw multipart value of [file].
@@ -457,6 +466,14 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -488,8 +505,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun language(): Optional<String> =
-            Optional.ofNullable(language.value.getNullable("language"))
+        fun language(): Optional<String> = language.value.getOptional("language")
 
         /**
          * Enable OCR for image-based documents
@@ -497,7 +513,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun ocr(): Optional<Boolean> = Optional.ofNullable(ocr.value.getNullable("ocr"))
+        fun ocr(): Optional<Boolean> = ocr.value.getOptional("ocr")
 
         /**
          * Returns the raw multipart value of [language].
@@ -609,6 +625,14 @@ private constructor(
             ocr()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

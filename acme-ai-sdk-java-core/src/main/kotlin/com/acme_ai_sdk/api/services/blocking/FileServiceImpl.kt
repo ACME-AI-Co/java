@@ -5,6 +5,7 @@ package com.acme_ai_sdk.api.services.blocking
 import com.acme_ai_sdk.api.core.ClientOptions
 import com.acme_ai_sdk.api.core.JsonValue
 import com.acme_ai_sdk.api.core.RequestOptions
+import com.acme_ai_sdk.api.core.checkRequired
 import com.acme_ai_sdk.api.core.handlers.errorHandler
 import com.acme_ai_sdk.api.core.handlers.jsonHandler
 import com.acme_ai_sdk.api.core.handlers.withErrorHandler
@@ -21,6 +22,7 @@ import com.acme_ai_sdk.api.models.files.FileFileSearchParams
 import com.acme_ai_sdk.api.models.files.FileFileSearchResponse
 import com.acme_ai_sdk.api.models.files.FileFileslistParams
 import com.acme_ai_sdk.api.models.files.FileFileslistResponse
+import kotlin.jvm.optionals.getOrNull
 
 class FileServiceImpl internal constructor(private val clientOptions: ClientOptions) : FileService {
 
@@ -92,6 +94,9 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             params: FileFileSearchParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<FileFileSearchResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("fileId", params.fileId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

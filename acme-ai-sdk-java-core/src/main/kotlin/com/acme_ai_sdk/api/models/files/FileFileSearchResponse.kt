@@ -17,6 +17,7 @@ import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class FileFileSearchResponse
 private constructor(
@@ -47,7 +48,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun fileId(): Optional<String> = Optional.ofNullable(fileId.getNullable("file_id"))
+    fun fileId(): Optional<String> = fileId.getOptional("file_id")
 
     /**
      * File metadata (only included if requested)
@@ -55,7 +56,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * The search query used
@@ -63,13 +64,13 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun query(): Optional<String> = Optional.ofNullable(query.getNullable("query"))
+    fun query(): Optional<String> = query.getOptional("query")
 
     /**
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun results(): Optional<List<Result>> = Optional.ofNullable(results.getNullable("results"))
+    fun results(): Optional<List<Result>> = results.getOptional("results")
 
     /**
      * Total number of results found
@@ -77,8 +78,7 @@ private constructor(
      * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun totalResults(): Optional<Long> =
-        Optional.ofNullable(totalResults.getNullable("total_results"))
+    fun totalResults(): Optional<Long> = totalResults.getOptional("total_results")
 
     /**
      * Returns the raw JSON value of [fileId].
@@ -276,6 +276,27 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: AcmeAiSdkInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (fileId.asKnown().isPresent) 1 else 0) +
+            (metadata.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (query.asKnown().isPresent) 1 else 0) +
+            (results.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (totalResults.asKnown().isPresent) 1 else 0)
+
     /** File metadata (only included if requested) */
     class Metadata
     private constructor(
@@ -332,8 +353,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * Unique identifier for the file
@@ -341,7 +361,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileId(): Optional<String> = Optional.ofNullable(fileId.getNullable("file_id"))
+        fun fileId(): Optional<String> = fileId.getOptional("file_id")
 
         /**
          * MIME type of the file
@@ -349,7 +369,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileType(): Optional<String> = Optional.ofNullable(fileType.getNullable("file_type"))
+        fun fileType(): Optional<String> = fileType.getOptional("file_type")
 
         /**
          * Original name of the file
@@ -357,7 +377,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun filename(): Optional<String> = Optional.ofNullable(filename.getNullable("filename"))
+        fun filename(): Optional<String> = filename.getOptional("filename")
 
         /**
          * Number of pages (for documents)
@@ -365,14 +385,14 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun pageCount(): Optional<Long> = Optional.ofNullable(pageCount.getNullable("page_count"))
+        fun pageCount(): Optional<Long> = pageCount.getOptional("page_count")
 
         /**
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
         fun processingOptions(): Optional<ProcessingOptions> =
-            Optional.ofNullable(processingOptions.getNullable("processing_options"))
+            processingOptions.getOptional("processing_options")
 
         /**
          * Time the file was uploaded
@@ -380,8 +400,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun uploadTime(): Optional<OffsetDateTime> =
-            Optional.ofNullable(uploadTime.getNullable("upload_time"))
+        fun uploadTime(): Optional<OffsetDateTime> = uploadTime.getOptional("upload_time")
 
         /**
          * Approximate word count
@@ -389,7 +408,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun wordCount(): Optional<Long> = Optional.ofNullable(wordCount.getNullable("word_count"))
+        fun wordCount(): Optional<Long> = wordCount.getOptional("word_count")
 
         /**
          * Returns the raw JSON value of [description].
@@ -656,6 +675,31 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (description.asKnown().isPresent) 1 else 0) +
+                (if (fileId.asKnown().isPresent) 1 else 0) +
+                (if (fileType.asKnown().isPresent) 1 else 0) +
+                (if (filename.asKnown().isPresent) 1 else 0) +
+                (if (pageCount.asKnown().isPresent) 1 else 0) +
+                (processingOptions.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (uploadTime.asKnown().isPresent) 1 else 0) +
+                (if (wordCount.asKnown().isPresent) 1 else 0)
+
         class ProcessingOptions
         private constructor(
             private val language: JsonField<String>,
@@ -677,7 +721,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun language(): Optional<String> = Optional.ofNullable(language.getNullable("language"))
+            fun language(): Optional<String> = language.getOptional("language")
 
             /**
              * Whether OCR was used
@@ -685,7 +729,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun ocr(): Optional<Boolean> = Optional.ofNullable(ocr.getNullable("ocr"))
+            fun ocr(): Optional<Boolean> = ocr.getOptional("ocr")
 
             /**
              * Returns the raw JSON value of [language].
@@ -803,6 +847,25 @@ private constructor(
                 validated = true
             }
 
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: AcmeAiSdkInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (language.asKnown().isPresent) 1 else 0) +
+                    (if (ocr.asKnown().isPresent) 1 else 0)
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -845,7 +908,7 @@ private constructor(
         private val highlightRanges: JsonField<List<HighlightRange>>,
         private val pageNumber: JsonField<Long>,
         private val passage: JsonField<String>,
-        private val relevanceScore: JsonField<Double>,
+        private val relevanceScore: JsonField<Float>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -863,7 +926,7 @@ private constructor(
             @JsonProperty("passage") @ExcludeMissing passage: JsonField<String> = JsonMissing.of(),
             @JsonProperty("relevance_score")
             @ExcludeMissing
-            relevanceScore: JsonField<Double> = JsonMissing.of(),
+            relevanceScore: JsonField<Float> = JsonMissing.of(),
         ) : this(
             additionalContext,
             highlightRanges,
@@ -885,7 +948,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun highlightRanges(): Optional<List<HighlightRange>> =
-            Optional.ofNullable(highlightRanges.getNullable("highlight_ranges"))
+            highlightRanges.getOptional("highlight_ranges")
 
         /**
          * Page number where the match was found (if applicable)
@@ -893,8 +956,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun pageNumber(): Optional<Long> =
-            Optional.ofNullable(pageNumber.getNullable("page_number"))
+        fun pageNumber(): Optional<Long> = pageNumber.getOptional("page_number")
 
         /**
          * Text passage containing the match with surrounding context
@@ -902,7 +964,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun passage(): Optional<String> = Optional.ofNullable(passage.getNullable("passage"))
+        fun passage(): Optional<String> = passage.getOptional("passage")
 
         /**
          * Relevance score of the result (0-1)
@@ -910,8 +972,7 @@ private constructor(
          * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun relevanceScore(): Optional<Double> =
-            Optional.ofNullable(relevanceScore.getNullable("relevance_score"))
+        fun relevanceScore(): Optional<Float> = relevanceScore.getOptional("relevance_score")
 
         /**
          * Returns the raw JSON value of [highlightRanges].
@@ -945,7 +1006,7 @@ private constructor(
          */
         @JsonProperty("relevance_score")
         @ExcludeMissing
-        fun _relevanceScore(): JsonField<Double> = relevanceScore
+        fun _relevanceScore(): JsonField<Float> = relevanceScore
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -972,7 +1033,7 @@ private constructor(
             private var highlightRanges: JsonField<MutableList<HighlightRange>>? = null
             private var pageNumber: JsonField<Long> = JsonMissing.of()
             private var passage: JsonField<String> = JsonMissing.of()
-            private var relevanceScore: JsonField<Double> = JsonMissing.of()
+            private var relevanceScore: JsonField<Float> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1042,17 +1103,16 @@ private constructor(
             fun passage(passage: JsonField<String>) = apply { this.passage = passage }
 
             /** Relevance score of the result (0-1) */
-            fun relevanceScore(relevanceScore: Double) =
-                relevanceScore(JsonField.of(relevanceScore))
+            fun relevanceScore(relevanceScore: Float) = relevanceScore(JsonField.of(relevanceScore))
 
             /**
              * Sets [Builder.relevanceScore] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.relevanceScore] with a well-typed [Double] value
+             * You should usually call [Builder.relevanceScore] with a well-typed [Float] value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun relevanceScore(relevanceScore: JsonField<Double>) = apply {
+            fun relevanceScore(relevanceScore: JsonField<Float>) = apply {
                 this.relevanceScore = relevanceScore
             }
 
@@ -1105,6 +1165,27 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AcmeAiSdkInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (highlightRanges.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (pageNumber.asKnown().isPresent) 1 else 0) +
+                (if (passage.asKnown().isPresent) 1 else 0) +
+                (if (relevanceScore.asKnown().isPresent) 1 else 0)
+
         class HighlightRange
         private constructor(
             private val end: JsonField<Long>,
@@ -1124,7 +1205,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun end(): Optional<Long> = Optional.ofNullable(end.getNullable("end"))
+            fun end(): Optional<Long> = end.getOptional("end")
 
             /**
              * Start index of highlight in passage
@@ -1132,7 +1213,7 @@ private constructor(
              * @throws AcmeAiSdkInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun start(): Optional<Long> = Optional.ofNullable(start.getNullable("start"))
+            fun start(): Optional<Long> = start.getOptional("start")
 
             /**
              * Returns the raw JSON value of [end].
@@ -1246,6 +1327,24 @@ private constructor(
                 start()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: AcmeAiSdkInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (end.asKnown().isPresent) 1 else 0) + (if (start.asKnown().isPresent) 1 else 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
