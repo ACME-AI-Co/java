@@ -20,8 +20,9 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse
 import com.acme_ai_sdk.api.models.files.FileFileSearchParams
 import com.acme_ai_sdk.api.models.files.FileFileSearchResponse
+import com.acme_ai_sdk.api.models.files.FileFileslistPage
+import com.acme_ai_sdk.api.models.files.FileFileslistPageResponse
 import com.acme_ai_sdk.api.models.files.FileFileslistParams
-import com.acme_ai_sdk.api.models.files.FileFileslistResponse
 import kotlin.jvm.optionals.getOrNull
 
 class FileServiceImpl internal constructor(private val clientOptions: ClientOptions) : FileService {
@@ -49,7 +50,7 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
     override fun fileslist(
         params: FileFileslistParams,
         requestOptions: RequestOptions,
-    ): FileFileslistResponse =
+    ): FileFileslistPage =
         // get /files/
         withRawResponse().fileslist(params, requestOptions).parse()
 
@@ -116,14 +117,14 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             }
         }
 
-        private val fileslistHandler: Handler<FileFileslistResponse> =
-            jsonHandler<FileFileslistResponse>(clientOptions.jsonMapper)
+        private val fileslistHandler: Handler<FileFileslistPageResponse> =
+            jsonHandler<FileFileslistPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun fileslist(
             params: FileFileslistParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<FileFileslistResponse> {
+        ): HttpResponseFor<FileFileslistPage> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -139,6 +140,13 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
+                    }
+                    .let {
+                        FileFileslistPage.builder()
+                            .service(FileServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
