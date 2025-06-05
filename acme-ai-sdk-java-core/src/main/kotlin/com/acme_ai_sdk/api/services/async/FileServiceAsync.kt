@@ -59,9 +59,7 @@ interface FileServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FileFileSearchResponse>
 
-    /**
-     * Retrieve the processing status of files. Can be filtered by status and sorted by upload time.
-     */
+    /** Retrieve a list of files. Can be filtered by status and sorted by upload time. */
     fun fileslist(): CompletableFuture<FileFileslistPageAsync> =
         fileslist(FileFileslistParams.none())
 
