@@ -8,8 +8,8 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse
 import com.acme_ai_sdk.api.models.files.FileFileSearchParams
 import com.acme_ai_sdk.api.models.files.FileFileSearchResponse
+import com.acme_ai_sdk.api.models.files.FileFileslistPage
 import com.acme_ai_sdk.api.models.files.FileFileslistParams
-import com.acme_ai_sdk.api.models.files.FileFileslistResponse
 import com.google.errorprone.annotations.MustBeClosed
 
 interface FileService {
@@ -36,6 +36,18 @@ interface FileService {
      * Search for content within a processed file using natural language queries. Returns relevant
      * passages and their context.
      */
+    fun fileSearch(fileId: String, params: FileFileSearchParams): FileFileSearchResponse =
+        fileSearch(fileId, params, RequestOptions.none())
+
+    /** @see [fileSearch] */
+    fun fileSearch(
+        fileId: String,
+        params: FileFileSearchParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): FileFileSearchResponse =
+        fileSearch(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+    /** @see [fileSearch] */
     fun fileSearch(params: FileFileSearchParams): FileFileSearchResponse =
         fileSearch(params, RequestOptions.none())
 
@@ -45,23 +57,21 @@ interface FileService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): FileFileSearchResponse
 
-    /**
-     * Retrieve the processing status of files. Can be filtered by status and sorted by upload time.
-     */
-    fun fileslist(): FileFileslistResponse = fileslist(FileFileslistParams.none())
+    /** Retrieve a list of files. Can be filtered by status and sorted by upload time. */
+    fun fileslist(): FileFileslistPage = fileslist(FileFileslistParams.none())
 
     /** @see [fileslist] */
     fun fileslist(
         params: FileFileslistParams = FileFileslistParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): FileFileslistResponse
+    ): FileFileslistPage
 
     /** @see [fileslist] */
-    fun fileslist(params: FileFileslistParams = FileFileslistParams.none()): FileFileslistResponse =
+    fun fileslist(params: FileFileslistParams = FileFileslistParams.none()): FileFileslistPage =
         fileslist(params, RequestOptions.none())
 
     /** @see [fileslist] */
-    fun fileslist(requestOptions: RequestOptions): FileFileslistResponse =
+    fun fileslist(requestOptions: RequestOptions): FileFileslistPage =
         fileslist(FileFileslistParams.none(), requestOptions)
 
     /** A view of [FileService] that provides access to raw HTTP responses for each method. */
@@ -87,6 +97,23 @@ interface FileService {
          * as [FileService.fileSearch].
          */
         @MustBeClosed
+        fun fileSearch(
+            fileId: String,
+            params: FileFileSearchParams,
+        ): HttpResponseFor<FileFileSearchResponse> =
+            fileSearch(fileId, params, RequestOptions.none())
+
+        /** @see [fileSearch] */
+        @MustBeClosed
+        fun fileSearch(
+            fileId: String,
+            params: FileFileSearchParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FileFileSearchResponse> =
+            fileSearch(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+        /** @see [fileSearch] */
+        @MustBeClosed
         fun fileSearch(params: FileFileSearchParams): HttpResponseFor<FileFileSearchResponse> =
             fileSearch(params, RequestOptions.none())
 
@@ -102,25 +129,24 @@ interface FileService {
          * [FileService.fileslist].
          */
         @MustBeClosed
-        fun fileslist(): HttpResponseFor<FileFileslistResponse> =
-            fileslist(FileFileslistParams.none())
+        fun fileslist(): HttpResponseFor<FileFileslistPage> = fileslist(FileFileslistParams.none())
 
         /** @see [fileslist] */
         @MustBeClosed
         fun fileslist(
             params: FileFileslistParams = FileFileslistParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<FileFileslistResponse>
+        ): HttpResponseFor<FileFileslistPage>
 
         /** @see [fileslist] */
         @MustBeClosed
         fun fileslist(
             params: FileFileslistParams = FileFileslistParams.none()
-        ): HttpResponseFor<FileFileslistResponse> = fileslist(params, RequestOptions.none())
+        ): HttpResponseFor<FileFileslistPage> = fileslist(params, RequestOptions.none())
 
         /** @see [fileslist] */
         @MustBeClosed
-        fun fileslist(requestOptions: RequestOptions): HttpResponseFor<FileFileslistResponse> =
+        fun fileslist(requestOptions: RequestOptions): HttpResponseFor<FileFileslistPage> =
             fileslist(FileFileslistParams.none(), requestOptions)
     }
 }

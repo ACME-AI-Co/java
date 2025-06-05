@@ -5,6 +5,7 @@ package com.acme_ai_sdk.api.services.async
 import com.acme_ai_sdk.api.core.ClientOptions
 import com.acme_ai_sdk.api.core.JsonValue
 import com.acme_ai_sdk.api.core.RequestOptions
+import com.acme_ai_sdk.api.core.checkRequired
 import com.acme_ai_sdk.api.core.handlers.errorHandler
 import com.acme_ai_sdk.api.core.handlers.jsonHandler
 import com.acme_ai_sdk.api.core.handlers.withErrorHandler
@@ -19,9 +20,11 @@ import com.acme_ai_sdk.api.models.files.FileFileCreateParams
 import com.acme_ai_sdk.api.models.files.FileFileCreateResponse
 import com.acme_ai_sdk.api.models.files.FileFileSearchParams
 import com.acme_ai_sdk.api.models.files.FileFileSearchResponse
+import com.acme_ai_sdk.api.models.files.FileFileslistPageAsync
+import com.acme_ai_sdk.api.models.files.FileFileslistPageResponse
 import com.acme_ai_sdk.api.models.files.FileFileslistParams
-import com.acme_ai_sdk.api.models.files.FileFileslistResponse
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class FileServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     FileServiceAsync {
@@ -49,7 +52,7 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
     override fun fileslist(
         params: FileFileslistParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<FileFileslistResponse> =
+    ): CompletableFuture<FileFileslistPageAsync> =
         // get /files/
         withRawResponse().fileslist(params, requestOptions).thenApply { it.parse() }
 
@@ -97,6 +100,9 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: FileFileSearchParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<FileFileSearchResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("fileId", params.fileId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -119,14 +125,14 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 }
         }
 
-        private val fileslistHandler: Handler<FileFileslistResponse> =
-            jsonHandler<FileFileslistResponse>(clientOptions.jsonMapper)
+        private val fileslistHandler: Handler<FileFileslistPageResponse> =
+            jsonHandler<FileFileslistPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun fileslist(
             params: FileFileslistParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<FileFileslistResponse>> {
+        ): CompletableFuture<HttpResponseFor<FileFileslistPageAsync>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -144,6 +150,14 @@ class FileServiceAsyncImpl internal constructor(private val clientOptions: Clien
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
                                 }
+                            }
+                            .let {
+                                FileFileslistPageAsync.builder()
+                                    .service(FileServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }

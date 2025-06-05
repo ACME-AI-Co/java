@@ -6,7 +6,6 @@ import com.acme_ai_sdk.api.TestServerExtension
 import com.acme_ai_sdk.api.client.okhttp.AcmeAiSdkOkHttpClient
 import com.acme_ai_sdk.api.models.files.FileFileCreateParams
 import com.acme_ai_sdk.api.models.files.FileFileSearchParams
-import com.acme_ai_sdk.api.models.files.FileFileslistParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -27,7 +26,7 @@ internal class FileServiceTest {
         val response =
             fileService.fileCreate(
                 FileFileCreateParams.builder()
-                    .file("some content".toByteArray())
+                    .file("some content".byteInputStream())
                     .description("description")
                     .processingOptions(
                         FileFileCreateParams.ProcessingOptions.builder()
@@ -75,17 +74,8 @@ internal class FileServiceTest {
                 .build()
         val fileService = client.files()
 
-        val response =
-            fileService.fileslist(
-                FileFileslistParams.builder()
-                    .limit(1L)
-                    .offset(0L)
-                    .sortBy(FileFileslistParams.SortBy.UPLOAD_TIME)
-                    .sortOrder(FileFileslistParams.SortOrder.ASC)
-                    .status(FileFileslistParams.Status.PENDING)
-                    .build()
-            )
+        val page = fileService.fileslist()
 
-        response.validate()
+        page.response().validate()
     }
 }

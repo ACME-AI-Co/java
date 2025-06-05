@@ -29,8 +29,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.parallel.ResourceLock
 
 @WireMockTest
+@ResourceLock("https://github.com/wiremock/wiremock/issues/169")
 internal class ErrorHandlingTest {
 
     companion object {
@@ -72,7 +74,7 @@ internal class ErrorHandlingTest {
             assertThrows<BadRequestException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -104,7 +106,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnauthorizedException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -136,7 +138,7 @@ internal class ErrorHandlingTest {
             assertThrows<PermissionDeniedException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -168,7 +170,7 @@ internal class ErrorHandlingTest {
             assertThrows<NotFoundException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -200,7 +202,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnprocessableEntityException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -232,7 +234,7 @@ internal class ErrorHandlingTest {
             assertThrows<RateLimitException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -264,7 +266,7 @@ internal class ErrorHandlingTest {
             assertThrows<InternalServerException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -296,7 +298,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnexpectedStatusCodeException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
@@ -326,7 +328,7 @@ internal class ErrorHandlingTest {
             assertThrows<AcmeAiSdkException> {
                 fileService.fileCreate(
                     FileFileCreateParams.builder()
-                        .file("some content".toByteArray())
+                        .file("some content".byteInputStream())
                         .description("description")
                         .processingOptions(
                             FileFileCreateParams.ProcessingOptions.builder()
